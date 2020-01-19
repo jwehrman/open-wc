@@ -120,3 +120,86 @@ html`
     }
   }
 </script>
+
+## Privately Settable Read-Only Properties
+
+The classic Polymer library allowed defining properties that were read-only, but privately settable. By adding `readOnly: true` to the property declaration, the property could be set with a `_setPropName` method.
+
+`ReadOnlyPropertiesMixin` provides a similar facility for LitElements (or, more specifically `UpdatingElements`).
+
+Read only properties can be set once for free, to allow for initialization, but after that, must be set using the `set` method, which accepts an object mapping of property names to new values.
+
+```js
+import { ReadOnlyPropertiesMixin } from '@open-wc/lit-helpers';
+import { LitElement } from 'lit-element';
+class SettableElement extends ReadOnlyPropertiesMixin(LitElement) {
+  static get properties() {
+    return {
+      timestamp: { type: Number, readOnly: true },
+    };
+  }
+
+  constructor() {
+    super();
+    this.timestamp = Date.now();
+  }
+
+  updateTime() {
+    this.set({ timestamp: Date.now() });
+  }
+
+  render() {
+    return html`
+      <button @click="${this.updateTime}">Update Time</button>
+      <time>${this.timestamp}</time>
+    `;
+  }
+}
+```
+
+The mixin also supports the `@property` decorator.
+
+```js
+import { ReadOnlyPropertiesMixin } from '@open-wc/lit-helpers';
+import { LitElement, property } from 'lit-element';
+class SettableElement extends ReadOnlyPropertiesMixin(LitElement) {
+  @property({ type: Number, readOnly: true }) timestamp = Date.now();
+
+  updateTime() {
+    this.set({ timestamp: Date.now() });
+  }
+
+  render() {
+    return html`
+      <button @click="${this.updateTime}">Update Time</button>
+      <time>${this.timestamp}</time>
+    `;
+  }
+}
+```
+
+### Known Limitations
+
+Currently, this mixin only works properly when applied to LitElement (or UpdatingElement) directly. In other words, if you have a component which inherits like the example below, then `ReadOnlyPropertiesMixin` must be applied to `Lowest` only.
+
+```js
+// Bad
+class Lowest extends LitElement {
+  @property({ readOnly: true }) lowestProperty;
+}
+
+class Highest extends ReadOnlyPropertiesMixin(Lowest) {
+  @property({ readOnly: true }) highestProperty; // will not work as expected
+}
+```
+
+```js
+// Good
+class Lowest extends ReadOnlyPropertiesMixin(LitElement) {
+  @property({ readOnly: true }) lowestProperty;
+}
+
+class Highest extends Lowest {
+  @property({ readOnly: true }) highestProperty;
+}
+```
