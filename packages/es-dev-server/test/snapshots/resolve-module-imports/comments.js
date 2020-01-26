@@ -1,5 +1,5 @@
 
-      import '../node_modules/my-module/index.js';
+      import '/node_modules/my-module/index.js';
 
       /**
        * Example: import 'my-module';

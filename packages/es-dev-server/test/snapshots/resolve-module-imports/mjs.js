@@ -1,3 +1,3 @@
 
-      import './foo.mjs';
+      import '/src/foo.mjs';
     

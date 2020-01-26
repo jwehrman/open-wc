@@ -463,7 +463,7 @@ describe('compatibility transform middleware', () => {
 
         expect(response.status).to.equal(200);
         expect(responseText).to.include(
-          "import { message } from './node_modules/my-module/index.js';",
+          "import { message } from '/node_modules/my-module/index.js';",
         );
         expect(responseText).to.include('async function* asyncGenerator()');
       } finally {
@@ -486,7 +486,7 @@ describe('compatibility transform middleware', () => {
         const responseText = await response.text();
         expect(response.status).to.equal(200);
         expect(responseText).to.include(
-          'System.register(["./node_modules/my-module/index.js", "./src/local-module.js"], function',
+          'System.register(["/node_modules/my-module/index.js", "./src/local-module.js"], function',
         );
       } finally {
         server.close();
@@ -564,7 +564,7 @@ describe('compatibility transform middleware', () => {
 
         expect(response.status).to.equal(200);
         expect(responseText).to.include(
-          "import { message } from './node_modules/my-module/index.js';",
+          "import { message } from '/node_modules/my-module/index.js';",
         );
         expect(responseText).to.include('async function* asyncGenerator()');
       } finally {
@@ -587,7 +587,7 @@ describe('compatibility transform middleware', () => {
         const responseText = await response.text();
         expect(response.status).to.equal(200);
         expect(responseText).to.include(
-          'System.register(["./node_modules/my-module/index.js", "./src/local-module.js"], function',
+          'System.register(["/node_modules/my-module/index.js", "./src/local-module.js"], function',
         );
       } finally {
         server.close();
@@ -620,9 +620,7 @@ describe('compatibility transform middleware', () => {
       expect(response.status).to.equal(200);
 
       expect(responseText).to.include('_asyncGenerator = _wrapAsyncGenerator(function* () {');
-      expect(responseText).to.include(
-        "import { message } from './node_modules/my-module/index.js'",
-      );
+      expect(responseText).to.include("import { message } from '/node_modules/my-module/index.js'");
     });
   });
 
@@ -653,7 +651,7 @@ describe('compatibility transform middleware', () => {
       expect(response.status).to.equal(200);
 
       expect(responseText).to.include(
-        'System.register(["./node_modules/my-module/index.ts", "./src/local-module.ts"]',
+        'System.register(["/node_modules/my-module/index.ts", "/src/local-module.ts"]',
       );
       expect(responseText).to.include("bar = 'buz';");
     });

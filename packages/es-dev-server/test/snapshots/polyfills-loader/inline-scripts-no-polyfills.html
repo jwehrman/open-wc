@@ -63,7 +63,7 @@ _AsyncGenerator.prototype.return = function (arg) { return this._invoke("return"
 
 function _AwaitValue(value) { this.wrapped = value; }
 
-import { message } from './node_modules/my-module/index.js';
+import { message } from '/node_modules/my-module/index.js';
 import './src/local-module.js';
 console.log("The message is: ".concat(message));
 

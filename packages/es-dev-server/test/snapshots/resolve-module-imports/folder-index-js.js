@@ -1,3 +1,3 @@
 
-      import '../node_modules/my-module/bar/index.js';
+      import '/node_modules/my-module/bar/index.js';
     

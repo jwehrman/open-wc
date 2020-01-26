@@ -109,8 +109,6 @@ async function maybeResolveImport(importer, importee, concatenatedString, cfg) {
     return importee;
   }
 
-  const sourceFileDir = path.dirname(importer);
-
   try {
     let resolvedImportFilePath;
 
@@ -133,9 +131,9 @@ async function maybeResolveImport(importer, importee, concatenatedString, cfg) {
       );
     }
 
-    const relativeImportFilePath = path.relative(sourceFileDir, resolvedImportFilePath);
+    const relativeImportFilePath = path.relative(cfg.rootDir, resolvedImportFilePath);
     const resolvedimportee = toBrowserPath(relativeImportFilePath);
-    return resolvedimportee.startsWith('.') ? resolvedimportee : `./${resolvedimportee}`;
+    return resolvedimportee.startsWith('.') ? resolvedimportee : `/${resolvedimportee}`;
   } catch (error) {
     // make module not found error message shorter
     if (error instanceof ModuleNotFoundError) {

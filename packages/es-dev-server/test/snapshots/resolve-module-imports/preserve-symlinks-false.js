@@ -1,3 +1,3 @@
 
-      import '../symlinked-package/index.js';
+      import '/symlinked-package/index.js';
     
